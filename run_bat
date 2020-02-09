@@ -1,0 +1,6 @@
+#!/bin/sh
+
+make alu-test
+make counter-test
+
+# sbt hello.scala
