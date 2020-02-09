@@ -11,10 +11,16 @@ SBT = sbt
 alu:
 	$(SBT) "runMain simple.AluMain"
 
+div:
+	$(SBT) "runMain simple.DividerMain"
+
 # Generate the C++ simulation and run the tests
 
 alu-test:
 	$(SBT) "test:runMain simple.AluTester"
+
+div-test:
+	$(SBT) "test:runMain simple.DividerTester"
 
 counter-test:
 	$(SBT) "test:runMain simple.CounterTester"
