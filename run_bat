@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-make div
+# make div
 make div-test
 exit
 make alu-test

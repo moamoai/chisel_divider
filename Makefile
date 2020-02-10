@@ -20,13 +20,14 @@ alu-test:
 	$(SBT) "test:runMain simple.AluTester"
 
 div-test:
-	$(SBT) "test:runMain simple.DividerTester"
+	$(SBT) "test:runMain simple.DividerTester --backend-name verilator"
 
 counter-test:
 	$(SBT) "test:runMain simple.CounterTester"
 
-fifo-view:
-	gtkwave generated/simple.FifoTester823761309/BubbleFifo.vcd --save=bubble.gtkw
+GTKWAVE = /Applications/gtkwave.app/Contents/Resources/bin/gtkwave
+view:
+	$(GTKWAVE) ./test_run_dir/simple.DividerTester2058623782/Driver.gtkw
 
 # clean everything (including IntelliJ project settings)
 
