@@ -15,6 +15,7 @@ class Divider extends Module {
     val valid     = Input (UInt(1.W))
     val dividend  = Input (UInt(16.W))
     val divisor   = Input (UInt(16.W))
+    val ready     = Output(UInt(1.W))
     val quotient  = Output(UInt(16.W))
     val remainder = Output(UInt(16.W))
   })
@@ -33,16 +34,19 @@ class Divider extends Module {
 //  quotient  := dividend / divisor
 //  remainder := dividend % divisor
 
+  val r_ready    = RegInit(0.U(1.W))
   val r_dividend = RegInit(0.U(16.W))
   val r_quotient = RegInit(0.U(16.W))
 
   when(valid === 1.U) {
+    r_ready    := 0.U
     r_dividend := dividend
     r_quotient := 0.U
   }.elsewhen(r_dividend >= divisor){
     r_dividend := r_dividend - divisor
     r_quotient := r_quotient + 1.U
   }.otherwise {
+    r_ready    := 1.U
   }
 
 //   for (i <- 1 to 1 by -1) {
@@ -58,6 +62,7 @@ class Divider extends Module {
   quotient  := r_quotient
 
   // Output
+  io.ready     := r_ready
   io.quotient  := quotient
   io.remainder := remainder
 }

@@ -11,13 +11,17 @@ class DividerTester(dut: Divider) extends PeekPokeTester(dut) {
 
   // This is exhaustive testing, which usually is not possible
   for (dividend  <- 8 to 72 by 8) {
-    for (divisor <- 8 to 8) {
+    for (divisor <- 3 to 8) {
       poke(dut.io.valid, 1)
       poke(dut.io.dividend, dividend)
       poke(dut.io.divisor , divisor)
       step(1)
       poke(dut.io.valid, 0)
-      step(8)
+      var ready = peek(dut.io.ready)
+      while (ready == 0){
+        step(1)
+        ready = peek(dut.io.ready)
+      }
       val exp_quotient  = dividend / divisor
       val exp_remainder = dividend % divisor
       expect(dut.io.quotient , exp_quotient)
