@@ -63,9 +63,9 @@ class Divider extends Module {
       r_quotient    := r_quotient + (1.U<<(r_counter-1.U))
     }.otherwise {
     }
-    r_counter    := r_counter - 1.U
+    r_counter  := r_counter - 1.U
+    r_ready    := (r_counter === 1.U)
   }.otherwise {
-    r_ready    := 1.U
   }
   
   remainder := r_dividend

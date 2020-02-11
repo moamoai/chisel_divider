@@ -12,7 +12,7 @@ class DividerTester(dut: Divider) extends PeekPokeTester(dut) {
   // This is exhaustive testing, which usually is not possible
 //  for (dividend  <- 8 to 36 by 1) {
 //    for (divisor <- 3 to 5) {
-  for (i  <- 1 to 100 by 1) {
+  for (i  <- 1 to 1000 by 1) {
     for (j <- 1 to 1) {
       var dividend = rnd.nextInt((1<<16)) 
       var divisor  = rnd.nextInt((1<<16)-1) + 1
@@ -35,6 +35,7 @@ class DividerTester(dut: Divider) extends PeekPokeTester(dut) {
       var quotient   = peek(dut.io.quotient )
       var remainder  = peek(dut.io.remainder)
       println(f"dividend[0x$dividend%08x] divisor[0x$divisor%08x] quotient[0x$quotient%08x] remainder[0x$remainder%08x]")
+      step(2)
 
       // var r_dividend = peek(dut.r_dividend)
       // var r_quotient = peek(dut.r_quotient)
