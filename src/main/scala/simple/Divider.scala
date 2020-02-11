@@ -35,29 +35,39 @@ class Divider extends Module {
 //  remainder := dividend % divisor
 
   val r_ready    = RegInit(0.U(1.W))
+  val r_counter  = RegInit(16.U(5.W))
   val r_dividend = RegInit(0.U(16.W))
   val r_quotient = RegInit(0.U(16.W))
 
+// // substract only
+//   when(valid === 1.U) {
+//     r_ready    := 0.U
+//     r_dividend := dividend
+//     r_quotient := 0.U
+//   }.elsewhen(r_dividend >= divisor){
+//     r_dividend := r_dividend - divisor
+//     r_quotient := r_quotient + 1.U
+//   }.otherwise {
+//     r_ready    := 1.U
+//   }
+
+  // shift + substract
   when(valid === 1.U) {
     r_ready    := 0.U
+    r_counter  := 16.U
     r_dividend := dividend
     r_quotient := 0.U
-  }.elsewhen(r_dividend >= divisor){
-    r_dividend := r_dividend - divisor
-    r_quotient := r_quotient + 1.U
+  }.elsewhen(r_counter!=0.U){
+    when(r_dividend >= (divisor<<(r_counter-1.U))){
+      r_dividend    := r_dividend - (divisor<<(r_counter-1.U))
+      r_quotient    := r_quotient + (1.U<<(r_counter-1.U))
+    }.otherwise {
+    }
+    r_counter    := r_counter - 1.U
   }.otherwise {
     r_ready    := 1.U
   }
-
-//   for (i <- 1 to 1 by -1) {
-//     when(r_dividend >= (divisor<<i)) {
-//       r_dividend := r_dividend - (divisor<<i)
-//       r_quotient := r_quotient + (1.U<<i)
-//     // }.elsewhen(stateReg === full){
-//     }.otherwise {
-//     }
-//     // There should not be an otherwise state
-//   }
+  
   remainder := r_dividend
   quotient  := r_quotient
 
@@ -70,9 +80,9 @@ class Divider extends Module {
 class DividerTop extends Module {
   val io = IO(new Bundle {
     val valid     = Input (UInt(1.W))
-    val dividend = Input (UInt(16.W))
-    val divisor  = Input (UInt(16.W))
-    val quotient = Output(UInt(16.W))
+    val dividend  = Input (UInt(16.W))
+    val divisor   = Input (UInt(16.W))
+    val quotient  = Output(UInt(16.W))
     val remainder = Output(UInt(16.W))
   })
 

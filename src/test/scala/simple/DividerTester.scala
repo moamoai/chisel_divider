@@ -10,8 +10,13 @@ import chisel3.iotesters.PeekPokeTester
 class DividerTester(dut: Divider) extends PeekPokeTester(dut) {
 
   // This is exhaustive testing, which usually is not possible
-  for (dividend  <- 8 to 72 by 8) {
-    for (divisor <- 3 to 8) {
+//  for (dividend  <- 8 to 36 by 1) {
+//    for (divisor <- 3 to 5) {
+  for (i  <- 1 to 100 by 1) {
+    for (j <- 1 to 1) {
+      var dividend = rnd.nextInt((1<<16)) 
+      var divisor  = rnd.nextInt((1<<16)-1) + 1
+      // var divisor  = rnd.nextInt((1<<8)-1) + 1
       poke(dut.io.valid, 1)
       poke(dut.io.dividend, dividend)
       poke(dut.io.divisor , divisor)
